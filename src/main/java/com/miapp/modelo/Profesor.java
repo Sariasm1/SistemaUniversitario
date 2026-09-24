@@ -3,11 +3,43 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.miapp.modelo;
+import java.util.ArrayList;
+import com.miapp.servicios.*;
 
 /**
  *
  * @author santi
  */
-public class Profesor {
+public final class Profesor extends Persona implements IBuscador{
+    
+    private final double salarioBase;
+    private static int totalProfesores = 0;
+    //private ArrayList<Curso> cursos;
+    
+    public Profesor(String nombre, String apellido, int id, double salarioBase) {
+        super(nombre, apellido, id);
+         this.salarioBase = salarioBase;
+         totalProfesores++;
+    }
+    
+    public void impartirClase(Curso c)
+    {
+        System.out.println("El profesor "+ this.getNombre() + " esta dando la clase del curso " + c.getCodigo());
+    }
+
+    @Override
+    public void buscarEstudiante(String criterio) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void buscarEstudiantePorCarrera(String carrera) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void cargarDatos() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }

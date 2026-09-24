@@ -1,4 +1,5 @@
 package com.miapp.modelo;
+import java.util.ArrayList;
 
 /**
  * Modelo: representa la entidad Estudiante.
@@ -14,6 +15,7 @@ public final class Estudiante extends Persona {
     // ── Atributos de instancia ────────────────────────────────────────────────
     private String carrera;
     private double promedio;
+    private ArrayList<Curso> cursosMatriculados;
 
     // ── Constructor ───────────────────────────────────────────────────────────
 

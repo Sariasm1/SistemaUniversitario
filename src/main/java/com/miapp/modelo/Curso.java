@@ -10,14 +10,17 @@ import java.util.ArrayList;
  * @author santi
  */
 public class Curso {
+    private static int totalCursos = 0;
     private String codigo;
     private int creditos;
     private ArrayList<Estudiante> estudiantesMatriculados;
+    private Profesor profesor;
 
     public Curso(String codigo, int creditos) {
         this.codigo = codigo;
         this.creditos = creditos;
         this.estudiantesMatriculados = new ArrayList<>();
+        totalCursos++;
     }
     
     public ArrayList<Estudiante> getEstudiantesMatriculados()
@@ -32,11 +35,25 @@ public class Curso {
     public void removeEstudiantesMatriculados(Estudiante e){
         estudiantesMatriculados.remove(e);
     }
+
+    public static int getTotalCursos() {
+        return totalCursos;
+    }
     
     public String getCodigo() {
         return codigo;
     }
 
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
+
+    
+    
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }

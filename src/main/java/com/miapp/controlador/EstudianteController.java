@@ -1,6 +1,6 @@
 package com.miapp.controlador;
 
-import com.miapp.modelo.Estudiante;
+import com.miapp.modelo.*;
 import com.miapp.servicios.IBuscador;
 import com.miapp.vista.EstudianteView;
 
@@ -21,6 +21,7 @@ public class EstudianteController implements IBuscador {
 
     // ── Array de estudiantes (fuente de datos) ────────────────────────────────
     private Estudiante[] estudiantes;
+    private Curso[] cursos;
 
     // ── Constructor ───────────────────────────────────────────────────────────
 
@@ -72,6 +73,18 @@ public class EstudianteController implements IBuscador {
 
         // Log: informa cuántos estudiantes se cargaron usando static getTotalEstudiantes()
         System.out.println("Total de estudiantes cargados: " + Estudiante.getTotalEstudiantes());
+    }
+    
+    private void inicializarCursos(){
+        cursos = new Curso[5];
+        
+        cursos[0] = new Curso("BDA150", 2);
+        cursos[1] = new Curso("SIS101", 2);
+        cursos[2] = new Curso("FMH500", 3);
+        cursos[3] = new Curso("LMB250", 3);
+        cursos[4] = new Curso("NZK325", 4);
+        
+        System.out.println("Total de cursos cargados: " + Curso.getTotalCursos());
     }
 
     // ── Lógica de búsqueda ────────────────────────────────────────────────────

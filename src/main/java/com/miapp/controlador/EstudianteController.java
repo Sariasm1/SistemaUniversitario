@@ -38,6 +38,7 @@ public class EstudianteController implements IBuscador {
     @Override
     public void cargarDatos() {
         inicializarEstudiantes();
+        inicializarCursos();
     }
 
     @Override
@@ -183,6 +184,14 @@ public class EstudianteController implements IBuscador {
             }
         }
         return carreras.toArray(new String[0]);
+    }
+    
+    public String[] obtenerCursos(){
+     List<String> listaCursos = new ArrayList<>();
+        for (Curso c : cursos) {
+             listaCursos.add(c.getCodigo());
+        }
+        return listaCursos.toArray(new String[0]);
     }
 
  

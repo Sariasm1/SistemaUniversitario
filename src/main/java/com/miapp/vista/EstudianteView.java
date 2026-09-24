@@ -22,15 +22,21 @@ public class EstudianteView extends JFrame {
     private static final String TITULO_PANEL_BUSQUEDA = "Buscar estudiante por nombre";
     private static final String TITULO_PANEL_CARRERA = "Buscar por carrera";
     private static final String TITULO_PANEL_AGREGAR = "Agregar nuevo estudiante";
+    private static final String TITULO_PANEL_CURSOS = "Cursos: Inscripción y consulta";
     private static final String TITULO_PANEL_RESULTADOS = "Resultados";
     private static final String LABEL_NOMBRE = "Nombre:";
     private static final String LABEL_APELLIDO = "Apellido:";
     private static final String LABEL_CARRERA = "Carrera:";
     private static final String LABEL_PROMEDIO = "Promedio:";
+    private static final String LABEL_CURSO = "Curso:";
+    private static final String LABEL_CURSO_INSTRUCCION = "(Primero busque y seleccione un estudiante en la tabla)";
+    private static final String LABEL_PROFESOR_ASIGNADO = "Profesor asignado: Ninguno";
     private static final String BOTON_BUSCAR = "Buscar";
     private static final String BOTON_BUSCAR_CARRERA = "Buscar por Carrera";
     private static final String BOTON_LIMPIAR = "Limpiar";
     private static final String BOTON_AGREGAR = "Agregar Estudiante";
+    private static final String BOTON_VER_ESTUDIANTES = "Ver estudiantes del curso";
+    private static final String BOTON_INSCRIBIR = "Inscribir en curso";
     private static final String OPCION_SELECCIONAR = "Seleccionar...";
     private static final String MENSAJE_INICIAL = "Ingrese un nombre o seleccione una carrera y presione Buscar.";
     private static final String MENSAJE_ENCONTRADO_UNO = "Se encontró 1 estudiante.";
@@ -42,6 +48,8 @@ public class EstudianteView extends JFrame {
     private static final Color COLOR_BOTON_CARRERA = new Color(76, 175, 80);
     private static final Color COLOR_BOTON_LIMPIAR = new Color(244, 67, 54);
     private static final Color COLOR_BOTON_AGREGAR = new Color(103, 58, 183);
+    private static final Color COLOR_BOTON_VER_ESTUDIANTES = new Color(91, 181, 155);
+    private static final Color COLOR_BOTON_INSCRIBIR = new Color(242, 183, 44);
     private static final Color COLOR_BOTON_TEXTO = Color.WHITE;
     private static final Color COLOR_ESTADO_TEXTO = Color.GRAY;
 
@@ -64,6 +72,12 @@ public class EstudianteView extends JFrame {
     private JComboBox<String>      cmbAgregarCarrera;
     private JSpinner               spinPromedio;
     private JButton                btnAgregar;
+    
+    // ── Componentes UI - Cursos: Inscripción y consulta ────────────────────────────────────
+    private JComboBox<String>      cmbCurso;
+    private JButton                btnEstudiantesCurso;
+    private JButton                btnInscribirCurso;
+    
 
     // ── Componentes UI - Resultados y Estado ────────────────────────────────────
     private JTable                 tblResultados;
@@ -145,8 +159,8 @@ public class EstudianteView extends JFrame {
         txtAgregarApellido = new JTextField(ANCHO_CAMPO_AGREGAR);
 
         JLabel lblAgregarCarrera = new JLabel(LABEL_CARRERA);
-        cmbAgregarCarrera = new JComboBox<>();
-        cmbAgregarCarrera.addItem(OPCION_SELECCIONAR);
+        cmbAgregarCarrera  = new JComboBox<>();
+        cmbAgregarCarrera .addItem(OPCION_SELECCIONAR);
         // Se carga después, cuando el controlador esté disponible
 
         JLabel lblAgregarPromedio = new JLabel(LABEL_PROMEDIO);
@@ -157,22 +171,50 @@ public class EstudianteView extends JFrame {
         btnAgregar.setBackground(COLOR_BOTON_AGREGAR);
         btnAgregar.setForeground(COLOR_BOTON_TEXTO);
         btnAgregar.setFocusPainted(false);
-
+        
         panelAgregar.add(lblAgregarNombre);
         panelAgregar.add(txtAgregarNombre);
         panelAgregar.add(lblAgregarApellido);
         panelAgregar.add(txtAgregarApellido);
         panelAgregar.add(lblAgregarCarrera);
-        panelAgregar.add(cmbAgregarCarrera);
         panelAgregar.add(lblAgregarPromedio);
         panelAgregar.add(spinPromedio);
         panelAgregar.add(btnAgregar);
+        
+        // Panel cursos: Inscripción y consulta (Fila 4)
+        JPanel panelCursos = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        panelCursos.setBorder(BorderFactory.createTitledBorder(TITULO_PANEL_CURSOS));
+        
+        JLabel lblCurso = new JLabel(LABEL_CURSO);
+        JLabel lblInstruccion = new JLabel(LABEL_CURSO_INSTRUCCION);
+        JLabel lblProfesorAsignado = new JLabel(LABEL_PROFESOR_ASIGNADO);
+        
+        cmbCurso = new JComboBox<>();
+        cmbCurso.addItem(OPCION_SELECCIONAR);
+        // Se carga después, cuando el controlador esté disponible
+        btnEstudiantesCurso = new JButton(BOTON_VER_ESTUDIANTES);
+        btnAgregar.setBackground(COLOR_BOTON_VER_ESTUDIANTES);
+        btnAgregar.setForeground(COLOR_BOTON_TEXTO);
+        btnAgregar.setFocusPainted(false);
+       
+        btnInscribirCurso = new JButton(BOTON_INSCRIBIR);
+        btnInscribirCurso.setBackground(COLOR_BOTON_INSCRIBIR);
+        btnInscribirCurso.setForeground(COLOR_BOTON_TEXTO);
+        btnInscribirCurso.setFocusPainted(false);
+        
+        panelCursos.add(lblCurso);
+        panelCursos.add(cmbCurso);
+        panelCursos.add(btnEstudiantesCurso);
+        panelCursos.add(btnInscribirCurso);
+        panelCursos.add(lblInstruccion);
+        panelCursos.add(lblProfesorAsignado);
 
         // Panel superior con GridLayout (3 filas, 1 columna)
-        JPanel panelSuperior = new JPanel(new GridLayout(3, 1, 5, 5));
+        JPanel panelSuperior = new JPanel(new GridLayout(4, 1, 5, 5));
         panelSuperior.add(panelBusqueda);
         panelSuperior.add(panelCarrera);
         panelSuperior.add(panelAgregar);
+        panelSuperior.add(panelCursos);
 
         // ────────────────────────────────────────────────────────────────────────
         // PANEL CENTRAL: Tabla de resultados
@@ -239,6 +281,15 @@ public class EstudianteView extends JFrame {
             String[] carreras = controlador.obtenerCarrerasUnicas();
             for (String carrera : carreras) {
                 cmbAgregarCarrera.addItem(carrera);
+            }
+        }
+    }
+    
+    private void cargarCursosSeleccionar() {
+        if (controlador != null) {
+            String[] cursos = controlador.obtenerCursos();
+            for (String curso : cursos) {
+                cmbCurso.addItem(curso);
             }
         }
     }
@@ -341,6 +392,7 @@ public class EstudianteView extends JFrame {
         this.controlador = controlador;
         cargarCarreras();
         cargarCarrerasAgregar();
+        cargarCursosSeleccionar();
         actualizarTotalEstudiantes();
     }
 

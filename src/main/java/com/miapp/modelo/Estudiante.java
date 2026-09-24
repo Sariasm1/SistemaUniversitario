@@ -3,26 +3,22 @@ package com.miapp.modelo;
 /**
  * Modelo: representa la entidad Estudiante.
  */
-public final class Estudiante {  
+public final class Estudiante extends Persona {  
 
     private static int totalEstudiantes = 0;
     public static final int PROMEDIO_MINIMO = 0;
     public static final int PROMEDIO_MAXIMO = 5;
     public static final String CARRERA_PREDETERMINADA = "Sin especificar";
+    public static final int MAX_MATERIAS = 5;
 
     // ── Atributos de instancia ────────────────────────────────────────────────
-    private int    id;
-    private String nombre;
-    private String apellido;
     private String carrera;
     private double promedio;
 
     // ── Constructor ───────────────────────────────────────────────────────────
 
     public Estudiante(int id, String nombre, String apellido, String carrera, double promedio) {
-        this.id       = id;
-        this.nombre   = nombre;
-        this.apellido = apellido;
+        super(nombre, apellido, id);
         this.carrera  = carrera;
    
         if (promedio >= PROMEDIO_MINIMO && promedio <= PROMEDIO_MAXIMO) {
@@ -52,18 +48,6 @@ public final class Estudiante {
 
     // ── Getters ──────────────────────────────────────────────────────────────
 
-    public int getId() { 
-        return id; 
-    }
-
-    public String getNombre() { 
-        return nombre; 
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
     public String getCarrera() { 
         return carrera; 
     }
@@ -73,18 +57,6 @@ public final class Estudiante {
     }
 
     // ── Setters ──────────────────────────────────────────────────────────────
-
-    public void setId(int id) { 
-        this.id = id; 
-    }
-
-    public void setNombre(String nombre) { 
-        this.nombre = nombre; 
-    }
-
-    public void setApellido(String apellido) { 
-        this.apellido = apellido; 
-    }
 
     public void setCarrera(String carrera) { 
         this.carrera = carrera; 
@@ -107,8 +79,8 @@ public final class Estudiante {
     @Override
     public final String toString() {
         return "ID: " + id
-             + " | Nombre: " + nombre
-             + " | Apellido: " + apellido   
+             + " | Nombre: " + this.getNombre()
+             + " | Apellido: " + this.getApellido()
              + " | Carrera: " + carrera
              + " | Promedio: " + String.format("%.2f", promedio);
     }

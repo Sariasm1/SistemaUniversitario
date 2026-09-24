@@ -74,7 +74,12 @@ public final class Estudiante extends Persona {
             this.promedio = p;
         }
     }
-
+    
+    @Override
+    public double calcularPago(){
+        return 0;
+    }
+    
     /**
      Método final: no puede ser sobrescrito por subclases
      */

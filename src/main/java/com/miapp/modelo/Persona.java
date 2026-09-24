@@ -18,6 +18,8 @@ public abstract class Persona {
         this.apellido = apellido;
         this.id = id;
     }
+    
+    public abstract double calcularPago();
 
     public String getNombre() {
         return nombre;

@@ -47,6 +47,8 @@ public class EstudianteView extends JFrame {
     private static final String BOTON_AGREGAR_PROFESOR = "Agregar Profesor";
     private static final String BOTON_VER_CURSOS = "Ver cursos del profesor";
     private static final String BOTON_ASIGNAR_CURSO = "Asignar a curso";
+    private static final String BOTON_BUSCAR_ESTADO = "Buscar por estado";
+    private static final String BOTON_CAMBIAR_ESTADO = "Cambiar a estado";
     private static final String OPCION_SELECCIONAR = "Seleccionar...";
     private static final String MENSAJE_INICIAL = "Ingrese un nombre o seleccione una carrera y presione Buscar.";
     private static final String MENSAJE_ENCONTRADO_UNO = "Se encontró 1 estudiante.";
@@ -62,6 +64,8 @@ public class EstudianteView extends JFrame {
     private static final Color COLOR_BOTON_AGREGAR_PROFESOR = new Color(39, 70, 245);
     private static final Color COLOR_BOTON_VER_CURSOS = new Color(91, 181, 155);
     private static final Color COLOR_BOTON_ASIGNAR_CURSO = new Color(39, 70, 245);
+    private static final Color COLOR_BOTON_BUSCAR_ESTADO = new Color(76, 175, 80);
+    private static final Color COLOR_BOTON_CAMBIAR_ESTADO = new Color(91, 181, 155);
     private static final Color COLOR_BOTON_INSCRIBIR = new Color(242, 183, 44);
     private static final Color COLOR_BOTON_TEXTO = Color.WHITE;
     private static final Color COLOR_ESTADO_TEXTO = Color.GRAY;
@@ -99,6 +103,11 @@ public class EstudianteView extends JFrame {
     private JButton                btnAgregarProfesor;
     private JButton                btnVerCursos;
     private JButton                btnAsignarCurso;
+    
+    // ── Componentes UI - Estado de matricula: buscar y cambiar ────────────────────────────────────
+    private JComboBox<String>      cmbEstado;
+    private JButton                btnBuscarEstado;
+    private JButton                btnCambiarEstado;
 
     // ── Componentes UI - Resultados y Estado ────────────────────────────────────
     private JTable                 tblResultados;
@@ -277,14 +286,45 @@ public class EstudianteView extends JFrame {
         panelProfesor.add(lblCursoAsignar);
         panelProfesor.add(cmbAgregarCurso);
         panelProfesor.add(btnAsignarCurso);
+        
+        // Panel Estado de matricula: buscar y cambiar (Fila 6)
+        JPanel panelEstado = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        panelEstado.setBorder(BorderFactory.createTitledBorder(TITULO_PANEL_ESTADO));
+        
+        JLabel lblNuevoEstado = new JLabel(LABEL_ESTADO);
+        JLabel lblEstadoInstruccion = new JLabel(LABEL_ESTADO_INSTRUCCION);
+        
+        cmbEstado = new JComboBox<>();
+        cmbEstado.addItem(OPCION_SELECCIONAR);
+        cmbEstado.addItem("ACTIVO");
+        cmbEstado.addItem("EGRESADO");
+        cmbEstado.addItem("RETIRADO");
+        
+        btnBuscarEstado = new JButton(BOTON_BUSCAR_ESTADO);
+        btnBuscarEstado.setBackground(COLOR_BOTON_BUSCAR_ESTADO);
+        btnBuscarEstado.setForeground(COLOR_BOTON_TEXTO);
+        btnBuscarEstado.setFocusPainted(false);
+        
+        btnCambiarEstado = new JButton(BOTON_CAMBIAR_ESTADO);
+        btnCambiarEstado.setBackground(COLOR_BOTON_CAMBIAR_ESTADO);
+        btnCambiarEstado.setForeground(COLOR_BOTON_TEXTO);
+        btnCambiarEstado.setFocusPainted(false);
+        
+        panelEstado.add(lblNuevoEstado);
+        panelEstado.add(cmbEstado);
+        panelEstado.add(btnBuscarEstado);
+        panelEstado.add(btnCambiarEstado);
+        panelEstado.add(lblEstadoInstruccion);
 
-        // Panel superior con GridLayout (3 filas, 1 columna)
-        JPanel panelSuperior = new JPanel(new GridLayout(5, 1, 5, 5));
+
+        // Panel superior con GridLayout (6 filas, 1 columna)
+        JPanel panelSuperior = new JPanel(new GridLayout(6, 1, 5, 5));
         panelSuperior.add(panelBusqueda);
         panelSuperior.add(panelCarrera);
         panelSuperior.add(panelAgregar);
         panelSuperior.add(panelCursos);
         panelSuperior.add(panelProfesor);
+        panelSuperior.add(panelEstado);
 
         // ────────────────────────────────────────────────────────────────────────
         // PANEL CENTRAL: Tabla de resultados

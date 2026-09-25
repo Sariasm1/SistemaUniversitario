@@ -18,8 +18,9 @@ public final class Profesor extends Persona implements IBuscador{
     
     public Profesor(String nombre, String apellido, int id, double salarioBase) {
         super(nombre, apellido, id);
-         this.salarioBase = salarioBase;
-         totalProfesores++;
+        this.salarioBase = salarioBase;
+        totalProfesores++;
+        this.cursos = new ArrayList<>();
     }
     
     public static int getProximoId() {  
@@ -53,6 +54,7 @@ public final class Profesor extends Persona implements IBuscador{
     public void impartirClase(Curso c)
     {
         System.out.println("El profesor "+ this.getNombre() + " esta dando la clase del curso " + c.getCodigo());
+        addCursos(c);
     }
 
     @Override

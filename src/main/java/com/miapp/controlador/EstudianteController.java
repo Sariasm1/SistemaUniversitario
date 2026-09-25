@@ -198,40 +198,35 @@ public class EstudianteController implements IBuscador {
     }
     
     private void buscarPorCursoPorProfesor(String nombreApellido) {
-    if (nombreApellido == null || nombreApellido.trim().isEmpty() || nombreApellido.equals("Seleccionar...")) {
-        vista.mostrarError(MENSAJE_BUSQUEDA_PROFESOR_VACIO);
-        return;
-    }
+        if (nombreApellido == null || nombreApellido.trim().isEmpty() || nombreApellido.equals("Seleccionar...")) {
+            vista.mostrarError(MENSAJE_BUSQUEDA_PROFESOR_VACIO);
+            return;
+        }
 
-    // 2. Buscar el profesor comparando nombre y apellido concatenados
-    Profesor profesorEncontrado = null;
-    for (Profesor p : profesores) {
-        if (p != null) {
-            String nombreCompleto = p.getNombre().trim() + " " + p.getApellido().trim();
-            if (nombreCompleto.equalsIgnoreCase(nombreApellido.trim())) {
-                profesorEncontrado = p;
-                break;
+        Profesor profesorEncontrado = null;
+        for (Profesor p : profesores) {
+            if (p != null) {
+                String nombreCompleto = p.getNombre().trim() + " " + p.getApellido().trim();
+                if (nombreCompleto.equalsIgnoreCase(nombreApellido.trim())) {
+                    profesorEncontrado = p;
+                    break;
+                }
             }
         }
-    }
 
-    // 3. Validar si el profesor existe
-    if (profesorEncontrado == null) {
-        vista.mostrarError("El profesor " + nombreApellido + " no fue encontrado.");
-        return;
-    }
+        if (profesorEncontrado == null) {
+            vista.mostrarError("El profesor " + nombreApellido + " no fue encontrado.");
+            return;
+        }
 
-    // 4. Obtener la lista de cursos del profesor
-    ArrayList<Curso> cursosDictados = profesorEncontrado.getCursos();
+        ArrayList<Curso> cursosDictados = profesorEncontrado.getCursos();
 
-    // 5. Validar si tiene cursos asignados
-    if (cursosDictados == null || cursosDictados.isEmpty()) {
-        vista.mostrarError("El profesor no tiene cursos asignados.");
-        return;
-    }
+        if (cursosDictados == null || cursosDictados.isEmpty()) {
+            vista.mostrarError("El profesor no tiene cursos asignados.");
+            return;
+        }
 
-    // 6. Enviar a la vista (asegúrate de que el método de tu vista/conversión reciba los cursos)
-    vista.mostrarCursosPorProfesor(convertirAFilasCursos(cursosDictados));
+        vista.mostrarCursosPorProfesor(convertirAFilasCursos(cursosDictados));
 }
 
     
@@ -258,6 +253,7 @@ public class EstudianteController implements IBuscador {
         return new Object[]{
             c.getCodigo(),
             c.getCreditos(),
+            c.getEstudiantesMatriculados().size()
         };
     }
 
@@ -369,6 +365,60 @@ public class EstudianteController implements IBuscador {
         vista.mostrarMensaje("Profesor agregado correctamente.\nTotal de Profesores: " +
                             Profesor.getTotalProfesores());
 
+        return true;
+    }
+    
+    public boolean asignarCursoAlProfesor(String nombreApellido, String codigo) {
+        // Validación de datos
+        if (nombreApellido == null || nombreApellido.trim().isEmpty() || nombreApellido.equals("Seleccionar...")) {
+            vista.mostrarError(MENSAJE_BUSQUEDA_PROFESOR_VACIO);
+            return false;
+        }
+        
+        if (codigo == null || codigo.trim().isEmpty() || codigo.equals("Seleccionar...")) {
+            vista.mostrarError(MENSAJE_BUSQUEDA_CURSO_VACIO);
+            return false;
+        }
+
+        Profesor profesorEncontrado = null;
+        for (Profesor p : profesores) {
+            if (p != null) {
+                String nombreCompleto = p.getNombre().trim() + " " + p.getApellido().trim();
+                if (nombreCompleto.equalsIgnoreCase(nombreApellido.trim())) {
+                    profesorEncontrado = p;
+                    break;
+                }
+            }
+        }
+
+        if (profesorEncontrado == null) {
+            vista.mostrarError("El profesor " + nombreApellido + " no fue encontrado.");
+            return false;
+        }
+        
+
+        Curso cursoEncontrado = null;
+        for (Curso c : cursos) {
+            if (c != null && c.getCodigo().equalsIgnoreCase(codigo.trim())) {
+                cursoEncontrado = c;
+                break;
+            }
+        }
+
+        if (cursoEncontrado == null) {
+            vista.mostrarError("El curso con código " + codigo + " no fue encontrado.");
+            return false;
+        }
+
+        for (Curso c : profesorEncontrado.getCursos()) {
+            if (c != null && c.getCodigo().equalsIgnoreCase(cursoEncontrado.getCodigo())) {
+                vista.mostrarError("El profesor ya tiene asignado el curso "+ codigo);
+                return false;
+            }
+        }
+
+        profesorEncontrado.impartirClase(cursoEncontrado);
+        vista.mostrarMensaje("Se le asignó el curso "+ codigo + " al profesor " + nombreApellido);
         return true;
     }
 }

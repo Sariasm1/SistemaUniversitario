@@ -52,9 +52,9 @@ public class EstudianteView extends JFrame {
     private static final String OPCION_SELECCIONAR = "Seleccionar...";
     private static final String MENSAJE_INICIAL = "Ingrese un nombre o seleccione una carrera y presione Buscar.";
     private static final String MENSAJE_ENCONTRADO_UNO = "Se encontró 1 estudiante.";
-    private static final String MENSAJE_ENCONTRADOS_VARIOS = "Se encontraron {0} estudiante(s).";
+    private static final String MENSAJE_ENCONTRADOS_VARIOS = "Se encontraron %d estudiante(s).";
     private static final String MENSAJE_CURSO_ENCONTRADO_UNO = "Se encontró 1 curso.";
-    private static final String MENSAJE_CURSO_ENCONTRADO_VARIOS = "Se encontraron {0} curso(s).";
+    private static final String MENSAJE_CURSO_ENCONTRADO_VARIOS = "Se encontraron %d curso(s).";
     private static final String MENSAJE_SIN_RESULTADOS = "No se encontraron estudiantes con ese criterio.";
     private static final String MENSAJE_CURSOS_SIN_RESULTADOS = "No se encontraron cursos con ese criterio.";
 
@@ -75,6 +75,7 @@ public class EstudianteView extends JFrame {
 
     // ── Columnas de la tabla (constante final) ─────────────────────────────────
     private static final String[] COLUMNAS_TABLA = {"ID", "Nombre", "Apellido", "Carrera", "Promedio"};
+    private static final String[] COLUMNAS_CURSOS = {"Código", "Creditos", "Estudiantes matriculados"};
     private static final int INDICE_PROMEDIO = 4;
 
     // ── Componentes UI - Búsqueda por nombre ────────────────────────────────────
@@ -518,6 +519,16 @@ public class EstudianteView extends JFrame {
                 controlador.buscarCursosPorProfesor(nombreCompleto);
             }
         });
+        
+                
+        // Evento: Asignar cursos del profesor
+        btnAsignarCurso.addActionListener((ActionEvent e) -> {
+            if (controlador != null) {
+                String nombreCompleto = (String) cmbAgregarProfesor.getSelectedItem();
+                String codigo = (String) cmbAgregarCurso.getSelectedItem();
+                controlador.asignarCursoAlProfesor(nombreCompleto, codigo);
+            }
+        });        
     }
 
     public void actualizarComboProfesores() {
@@ -544,6 +555,7 @@ public class EstudianteView extends JFrame {
 
     public void mostrarEstudiantes(List<Object[]> filas) {
         limpiarTabla();
+        modeloTabla.setColumnIdentifiers(COLUMNAS_TABLA);
         if (filas == null || filas.isEmpty()) {
             setEstado(MENSAJE_SIN_RESULTADOS);
             return;
@@ -556,6 +568,7 @@ public class EstudianteView extends JFrame {
     
     public void mostrarCursosPorProfesor(List<Object[]> filas) {
         limpiarTabla();
+        modeloTabla.setColumnIdentifiers(COLUMNAS_CURSOS);
         // Nunca llega a ejecutarse este mensaje de estado debido a que el controlador retorna y tira su propio error.
         // Lo dejo por si hipoteticamente se trabaje en un sistema en el que en un futuro se vaya a agregar un filtro de cursos por 
         // estudiantes con X criterio.

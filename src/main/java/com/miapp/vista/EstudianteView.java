@@ -59,9 +59,9 @@ public class EstudianteView extends JFrame {
     private static final Color COLOR_BOTON_LIMPIAR = new Color(244, 67, 54);
     private static final Color COLOR_BOTON_AGREGAR = new Color(103, 58, 183);
     private static final Color COLOR_BOTON_VER_ESTUDIANTES = new Color(91, 181, 155);
-    private static final Color COLOR_BOTON_AGREGAR_PROFESOR = new Color(39, 118, 245);
+    private static final Color COLOR_BOTON_AGREGAR_PROFESOR = new Color(39, 70, 245);
     private static final Color COLOR_BOTON_VER_CURSOS = new Color(91, 181, 155);
-    private static final Color COLOR_BOTON_ASIGNAR_CURSO = new Color(39, 118, 245);
+    private static final Color COLOR_BOTON_ASIGNAR_CURSO = new Color(39, 70, 245);
     private static final Color COLOR_BOTON_INSCRIBIR = new Color(242, 183, 44);
     private static final Color COLOR_BOTON_TEXTO = Color.WHITE;
     private static final Color COLOR_ESTADO_TEXTO = Color.GRAY;
@@ -262,9 +262,9 @@ public class EstudianteView extends JFrame {
         btnVerCursos.setFocusPainted(false);
         
         btnAsignarCurso = new JButton(BOTON_ASIGNAR_CURSO);
-        btnVerCursos.setBackground(COLOR_BOTON_ASIGNAR_CURSO);
-        btnVerCursos.setForeground(COLOR_BOTON_TEXTO);
-        btnVerCursos.setFocusPainted(false);
+        btnAsignarCurso.setBackground(COLOR_BOTON_ASIGNAR_CURSO);
+        btnAsignarCurso.setForeground(COLOR_BOTON_TEXTO);
+        btnAsignarCurso.setFocusPainted(false);
         
         panelProfesor.add(lblNombreProfesor);
         panelProfesor.add(txtAgregarNombre);

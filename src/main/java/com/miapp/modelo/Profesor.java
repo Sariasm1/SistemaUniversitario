@@ -27,6 +27,9 @@ public final class Profesor extends Persona implements IBuscador{
         return salarioBase;
     }
     
+     public static int getTotalProfesores() {
+        return totalProfesores;
+    }
     
     public void impartirClase(Curso c)
     {

@@ -39,6 +39,7 @@ public class EstudianteController implements IBuscador {
     @Override
     public void cargarDatos() {
         inicializarEstudiantes();
+        inicializarProfesores();
         inicializarCursos();
     }
 
@@ -72,6 +73,19 @@ public class EstudianteController implements IBuscador {
 
         // Log: informa cuántos estudiantes se cargaron usando static getTotalEstudiantes()
         System.out.println("Total de estudiantes cargados: " + Estudiante.getTotalEstudiantes());
+    }
+    
+    private void inicializarProfesores() {
+        this.profesores = new ArrayList();
+        
+        this.profesores.add(new Profesor("Juan ", "García", 1, 2100000));
+        this.profesores.add(new Profesor("Fernando", "Castro", 2, 2850000));
+        this.profesores.add(new Profesor("Diana", "Mendoza", 3, 3400000));
+        this.profesores.add(new Profesor("Ricardo", "Vargas", 4, 2300000));
+        this.profesores.add(new Profesor("Gabriela", "Paredes", 5, 3750000));
+
+        // Log: informa cuántos estudiantes se cargaron usando static getTotalEstudiantes()
+        System.out.println("Total de profesores cargados: " + Profesor.getTotalProfesores());
     }
     
     private void inicializarCursos(){
@@ -188,6 +202,14 @@ public class EstudianteController implements IBuscador {
      List<String> listaCursos = new ArrayList<>();
         for (Curso c : cursos) {
              listaCursos.add(c.getCodigo());
+        }
+        return listaCursos.toArray(new String[0]);
+    }
+    
+    public String[] obtenerProfesores(){
+     List<String> listaCursos = new ArrayList<>();
+        for (Profesor p : profesores) {
+             listaCursos.add(p.getNombre().trim() + " " + p.getApellido().trim());
         }
         return listaCursos.toArray(new String[0]);
     }

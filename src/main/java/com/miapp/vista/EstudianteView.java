@@ -97,6 +97,7 @@ public class EstudianteView extends JFrame {
     
     // ── Componentes UI - Profesores: Agregar y asignar a curso ────────────────────────────────────
     private JTextField             txtAgregarNombreProfesor;
+    private JTextField             txtAgregarApellidoProfesor;
     private JSpinner               spinSalario;
     private JComboBox<String>      cmbAgregarProfesor;
     private JComboBox<String>      cmbAgregarCurso;
@@ -245,11 +246,13 @@ public class EstudianteView extends JFrame {
         panelProfesor.setBorder(BorderFactory.createTitledBorder(TITULO_PANEL_PROFESOR));
         
         JLabel lblNombreProfesor = new JLabel(LABEL_NOMBRE);
+        JLabel lblApellidoProfesor = new JLabel(LABEL_APELLIDO);
         JLabel lblSalario = new JLabel(LABEL_SALARIO);
         JLabel lblProfesor = new JLabel(LABEL_PROFESOR);
         JLabel lblCursoAsignar = new JLabel(LABEL_CURSO_ASIGNAR);
         
-        txtAgregarNombre = new JTextField(ANCHO_CAMPO_AGREGAR);
+        txtAgregarNombreProfesor = new JTextField(ANCHO_CAMPO_AGREGAR);
+        txtAgregarApellidoProfesor = new JTextField(ANCHO_CAMPO_AGREGAR);
         
         spinSalario = new JSpinner(new SpinnerNumberModel(2000000.0, 2000000.0, 4000000.0, 50000.0));
         spinSalario.setPreferredSize(new Dimension(110, 25));
@@ -276,7 +279,9 @@ public class EstudianteView extends JFrame {
         btnAsignarCurso.setFocusPainted(false);
         
         panelProfesor.add(lblNombreProfesor);
-        panelProfesor.add(txtAgregarNombre);
+        panelProfesor.add(txtAgregarNombreProfesor);
+        panelProfesor.add(lblApellidoProfesor);
+        panelProfesor.add(txtAgregarApellidoProfesor);
         panelProfesor.add(lblSalario);
         panelProfesor.add(spinSalario);
         panelProfesor.add(btnAgregarProfesor);
@@ -400,6 +405,16 @@ public class EstudianteView extends JFrame {
             String[] cursos = controlador.obtenerCursos();
             for (String curso : cursos) {
                 cmbCurso.addItem(curso);
+                cmbAgregarCurso.addItem(curso);
+            }
+        }
+    }
+    
+    private void cargarProfesoresSeleccionar(){
+         if (controlador != null) {
+            String[] profesores = controlador.obtenerProfesores();
+            for (String profesor : profesores) {
+                cmbAgregarProfesor.addItem(profesor);
             }
         }
     }
@@ -503,6 +518,7 @@ public class EstudianteView extends JFrame {
         cargarCarreras();
         cargarCarrerasAgregar();
         cargarCursosSeleccionar();
+        cargarProfesoresSeleccionar();
         actualizarTotalEstudiantes();
     }
 

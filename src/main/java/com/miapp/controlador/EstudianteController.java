@@ -254,6 +254,10 @@ public class EstudianteController implements IBuscador {
     public final int obtenerTotalEstudiantes() {
         return Estudiante.getTotalEstudiantes();
     }
+    
+    public final int obtenerTotalProfesores() {
+        return Profesor.getTotalProfesores();
+    }
 
    
     public boolean agregarEstudiante(String nombre, String apellido, String carrera, double promedio) {
@@ -279,6 +283,32 @@ public class EstudianteController implements IBuscador {
         // Mostrar mensaje de éxito
         vista.mostrarMensaje("Estudiante agregado correctamente.\nTotal de estudiantes: " +
                             Estudiante.getTotalEstudiantes());
+
+        return true;
+    }
+    
+    public boolean agregarProfesor(String nombre, String apellido, double salarioBase) {
+        // Validación de datos
+        if (nombre == null || nombre.isEmpty() || apellido == null || apellido.isEmpty()) { /// No funciona "carrera == null", ya que seleccionar cuenta como opc valida.
+            vista.mostrarError("Todos los campos son obligatorios.");
+            return false;
+        }
+
+        for(Profesor p: profesores){
+            if (p.getNombre().trim().equalsIgnoreCase(nombre.trim()) && p.getApellido().trim().equalsIgnoreCase(apellido.trim())){
+                vista.mostrarError("Ya existe un profesor con este nombre y apellido.");
+                return false;
+            }
+        }
+        
+        // Crear nuevo estudiante con ID automático basado en el contador static
+        int proximoId = Profesor.getProximoId();
+        Profesor nuevoProfesor = new Profesor(nombre, apellido, proximoId, salarioBase);
+        profesores.add(nuevoProfesor);
+        
+        // Mostrar mensaje de éxito
+        vista.mostrarMensaje("Profesor agregado correctamente.\nTotal de Profesores: " +
+                            Profesor.getTotalProfesores());
 
         return true;
     }

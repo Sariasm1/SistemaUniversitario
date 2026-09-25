@@ -22,6 +22,11 @@ public final class Profesor extends Persona implements IBuscador{
          totalProfesores++;
     }
     
+    public static int getProximoId() {  
+        return totalProfesores + 1;
+    
+    }
+    
     @Override
     public double calcularPago(){
         return salarioBase;

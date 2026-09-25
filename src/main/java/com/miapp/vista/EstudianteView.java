@@ -37,7 +37,7 @@ public class EstudianteView extends JFrame {
     private static final String LABEL_ESTADO = "Nuevo estado:";
     private static final String LABEL_ESTADO_INSTRUCCION = "('Cambiar estado' requiere seleccionar un estudiante en la tabla)";
     private static final String LABEL_CURSO_INSTRUCCION = "(Primero busque y seleccione un estudiante en la tabla)";
-    private static final String LABEL_PROFESOR_ASIGNADO = "Profesor asignado: Ninguno";
+    private final String LABEL_PROFESOR_ASIGNADO = "Profesor asignado: Ninguno";
     private static final String BOTON_BUSCAR = "Buscar";
     private static final String BOTON_BUSCAR_CARRERA = "Buscar por Carrera";
     private static final String BOTON_LIMPIAR = "Limpiar";
@@ -115,6 +115,7 @@ public class EstudianteView extends JFrame {
     private DefaultTableModel      modeloTabla;
     private JLabel                 lblEstado;
     private JLabel                 lblTotalEstudiantes;
+    private JLabel                 lblTotalProfesores;
 
     // ── Controlador ───────────────────────────────────────────────────────────
     private EstudianteController controlador;
@@ -361,9 +362,21 @@ public class EstudianteView extends JFrame {
         lblTotalEstudiantes.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
         lblTotalEstudiantes.setForeground(Color.BLUE);
         actualizarTotalEstudiantes();
+        
+        lblTotalProfesores = new JLabel();
+        lblTotalProfesores.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
+        lblTotalProfesores.setForeground(Color.BLUE);
+        actualizarTotalProfesores();
+        
+        // Panel auxiliar a la derecha para juntar ambos contadores
+        JPanel panelDerecho = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        panelDerecho.setOpaque(false); // Para conservar el color de fondo de panelInferior
+        panelDerecho.add(lblTotalProfesores);
+        panelDerecho.add(lblTotalEstudiantes);
 
+        // Agregas al panel inferior principal
         panelInferior.add(lblEstado, BorderLayout.WEST);
-        panelInferior.add(lblTotalEstudiantes, BorderLayout.EAST);
+        panelInferior.add(panelDerecho, BorderLayout.EAST);
 
         // ────────────────────────────────────────────────────────────────────────
         // Agregar todo al JFrame
@@ -476,6 +489,23 @@ public class EstudianteView extends JFrame {
                 controlador.buscarEstudiantePorCurso(cmbCurso.getSelectedItem().toString().trim());
             }
         });
+        
+        // Evento: agregar nuevo profesor
+        btnAgregarProfesor.addActionListener((ActionEvent e) -> {
+            if (controlador != null) {
+                String nombre = txtAgregarNombreProfesor.getText().trim();
+                String apellido = txtAgregarApellidoProfesor.getText().trim();
+                double salarioBase = (double) spinSalario.getValue();
+
+                if (controlador.agregarProfesor(nombre, apellido, salarioBase)) {
+                    // Limpiar formulario
+                    txtAgregarNombreProfesor.setText("");
+                    txtAgregarApellidoProfesor.setText("");
+                    spinSalario.setValue(2000000.0);
+                    actualizarTotalProfesores();
+                }
+            }
+        });
     }
 
     public void mostrarEstudiante(Object[] fila) {
@@ -527,12 +557,18 @@ public class EstudianteView extends JFrame {
         cargarCursosSeleccionar();
         cargarProfesoresSeleccionar();
         actualizarTotalEstudiantes();
+        actualizarTotalProfesores();
     }
 
 
     private void actualizarTotalEstudiantes() {
         int total = (controlador != null) ? controlador.obtenerTotalEstudiantes() : 0;
         lblTotalEstudiantes.setText("Total de estudiantes: " + total);
+    }
+    
+    private void actualizarTotalProfesores(){
+        int total = (controlador != null) ? controlador.obtenerTotalProfesores(): 0;
+        lblTotalProfesores.setText("Total de Profesores: " + total);
     }
 
     /**

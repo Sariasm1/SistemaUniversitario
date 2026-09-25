@@ -53,7 +53,10 @@ public class EstudianteView extends JFrame {
     private static final String MENSAJE_INICIAL = "Ingrese un nombre o seleccione una carrera y presione Buscar.";
     private static final String MENSAJE_ENCONTRADO_UNO = "Se encontró 1 estudiante.";
     private static final String MENSAJE_ENCONTRADOS_VARIOS = "Se encontraron {0} estudiante(s).";
+    private static final String MENSAJE_CURSO_ENCONTRADO_UNO = "Se encontró 1 curso.";
+    private static final String MENSAJE_CURSO_ENCONTRADO_VARIOS = "Se encontraron {0} curso(s).";
     private static final String MENSAJE_SIN_RESULTADOS = "No se encontraron estudiantes con ese criterio.";
+    private static final String MENSAJE_CURSOS_SIN_RESULTADOS = "No se encontraron cursos con ese criterio.";
 
     // ── Constantes finales para colores ────────────────────────────────────────
     private static final Color COLOR_BOTON_FONDO = new Color(59, 139, 212);
@@ -507,6 +510,14 @@ public class EstudianteView extends JFrame {
                 }
             }
         });
+        
+        // Evento: Ver cursos del profesor
+        btnVerCursos.addActionListener((ActionEvent e) -> {
+            if (controlador != null) {
+                String nombreCompleto = (String) cmbAgregarProfesor.getSelectedItem();
+                controlador.buscarCursosPorProfesor(nombreCompleto);
+            }
+        });
     }
 
     public void actualizarComboProfesores() {
@@ -524,6 +535,12 @@ public class EstudianteView extends JFrame {
         modeloTabla.addRow(fila);
         setEstado(MENSAJE_ENCONTRADO_UNO);
     }
+    
+    public void mostrarCursoPorProfesor(Object[] fila) {
+        limpiarTabla();
+        modeloTabla.addRow(fila);
+        setEstado(MENSAJE_CURSO_ENCONTRADO_UNO);
+    }
 
     public void mostrarEstudiantes(List<Object[]> filas) {
         limpiarTabla();
@@ -535,6 +552,21 @@ public class EstudianteView extends JFrame {
             modeloTabla.addRow(fila);
         }
         setEstado(String.format(MENSAJE_ENCONTRADOS_VARIOS, filas.size()));
+    }
+    
+    public void mostrarCursosPorProfesor(List<Object[]> filas) {
+        limpiarTabla();
+        // Nunca llega a ejecutarse este mensaje de estado debido a que el controlador retorna y tira su propio error.
+        // Lo dejo por si hipoteticamente se trabaje en un sistema en el que en un futuro se vaya a agregar un filtro de cursos por 
+        // estudiantes con X criterio.
+        if (filas == null || filas.isEmpty()) {
+            setEstado(MENSAJE_CURSOS_SIN_RESULTADOS);
+            return;
+        }
+        for (Object[] fila : filas) {
+            modeloTabla.addRow(fila);
+        }
+        setEstado(String.format(MENSAJE_CURSO_ENCONTRADO_VARIOS, filas.size()));
     }
 
     /**

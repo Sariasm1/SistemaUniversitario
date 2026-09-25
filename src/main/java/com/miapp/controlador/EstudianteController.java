@@ -15,6 +15,7 @@ public class EstudianteController implements IBuscador {
     private static final String MENSAJE_BUSQUEDA_VACIA = "Por favor ingrese un nombre para buscar.";
     private static final String MENSAJE_BUSQUEDA_CARRERA_VACIA = "Por favor seleccione una carrera para buscar.";
     private static final String MENSAJE_BUSQUEDA_CURSO_VACIO = "Por favor seleccione un curso para buscar.";
+    private static final String MENSAJE_BUSQUEDA_PROFESOR_VACIO = "Por favor seleccione un profesor.";
     private static final String MENSAJE_SIN_RESULTADOS = "No se encontraron estudiantes con ese criterio.";
 
     // ── Vista ─────────────────────────────────────────────────────────────────
@@ -57,6 +58,11 @@ public class EstudianteController implements IBuscador {
     @Override
     public void buscarEstudiantePorCurso(String codigo) {
         buscarPorCurso(codigo);
+    }
+    
+    @Override
+    public void buscarCursosPorProfesor(String nombreCompleto) {
+        buscarPorCursoPorProfesor(nombreCompleto);
     }
 
     // ── Carga de datos iniciales ──────────────────────────────────────────────
@@ -190,6 +196,43 @@ public class EstudianteController implements IBuscador {
 
           vista.mostrarEstudiantes(convertirAFilas(resultados));
     }
+    
+    private void buscarPorCursoPorProfesor(String nombreApellido) {
+    if (nombreApellido == null || nombreApellido.trim().isEmpty() || nombreApellido.equals("Seleccionar...")) {
+        vista.mostrarError(MENSAJE_BUSQUEDA_PROFESOR_VACIO);
+        return;
+    }
+
+    // 2. Buscar el profesor comparando nombre y apellido concatenados
+    Profesor profesorEncontrado = null;
+    for (Profesor p : profesores) {
+        if (p != null) {
+            String nombreCompleto = p.getNombre().trim() + " " + p.getApellido().trim();
+            if (nombreCompleto.equalsIgnoreCase(nombreApellido.trim())) {
+                profesorEncontrado = p;
+                break;
+            }
+        }
+    }
+
+    // 3. Validar si el profesor existe
+    if (profesorEncontrado == null) {
+        vista.mostrarError("El profesor " + nombreApellido + " no fue encontrado.");
+        return;
+    }
+
+    // 4. Obtener la lista de cursos del profesor
+    ArrayList<Curso> cursosDictados = profesorEncontrado.getCursos();
+
+    // 5. Validar si tiene cursos asignados
+    if (cursosDictados == null || cursosDictados.isEmpty()) {
+        vista.mostrarError("El profesor no tiene cursos asignados.");
+        return;
+    }
+
+    // 6. Enviar a la vista (asegúrate de que el método de tu vista/conversión reciba los cursos)
+    vista.mostrarCursosPorProfesor(convertirAFilasCursos(cursosDictados));
+}
 
     
     private Object[] convertirAFila(Estudiante e) {
@@ -203,13 +246,29 @@ public class EstudianteController implements IBuscador {
     }
 
   
-    private List<Object[]> convertirAFilas(List<Estudiante> lista) {
+        private List<Object[]> convertirAFilas(List<Estudiante> lista) {
         List<Object[]> filas = new ArrayList<>();
         for (Estudiante e : lista) {
             filas.add(convertirAFila(e));
         }
         return filas;
     }
+        
+    private Object[] convertirAFilaCurso(Curso c) {
+        return new Object[]{
+            c.getCodigo(),
+            c.getCreditos(),
+        };
+    }
+
+  
+        private List<Object[]> convertirAFilasCursos(List<Curso> lista) {
+        List<Object[]> filas = new ArrayList<>();
+        for (Curso c : lista) {
+            filas.add(convertirAFilaCurso(c));
+        }
+        return filas;
+    }    
 
     public Estudiante obtenerEstudiantePorId(int id) {
         for (Estudiante e : estudiantes) {
@@ -251,10 +310,6 @@ public class EstudianteController implements IBuscador {
     }
     
     
-    
-    
-
- 
     public final int obtenerTotalEstudiantes() {
         return Estudiante.getTotalEstudiantes();
     }

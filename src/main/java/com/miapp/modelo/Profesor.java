@@ -14,7 +14,7 @@ public final class Profesor extends Persona implements IBuscador{
     
     private final double salarioBase;
     private static int totalProfesores = 0;
-    //private ArrayList<Curso> cursos;
+    private ArrayList<Curso> cursos;
     
     public Profesor(String nombre, String apellido, int id, double salarioBase) {
         super(nombre, apellido, id);
@@ -26,6 +26,20 @@ public final class Profesor extends Persona implements IBuscador{
         return totalProfesores + 1;
     
     }
+    
+    public ArrayList<Curso> getCursos()
+    {
+       return cursos;
+    }
+    
+    public void addCursos(Curso c){
+        cursos.add(c);
+    }
+          
+    public void removeCursos(Curso c){
+        cursos.remove(c);
+    }
+    
     
     @Override
     public double calcularPago(){
@@ -58,6 +72,11 @@ public final class Profesor extends Persona implements IBuscador{
 
     @Override
     public void buscarEstudiantePorCurso(String codigo) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void buscarCursosPorProfesor(String nombreCompleto) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     

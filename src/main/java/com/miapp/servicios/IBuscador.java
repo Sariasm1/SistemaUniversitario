@@ -13,5 +13,6 @@ public interface IBuscador {
     void buscarEstudiante(String criterio);
     void buscarEstudiantePorCarrera(String carrera);
     void buscarEstudiantePorCurso(String codigo);
+    void buscarCursosPorProfesor(String nombreCompleto);
     void cargarDatos();
 }

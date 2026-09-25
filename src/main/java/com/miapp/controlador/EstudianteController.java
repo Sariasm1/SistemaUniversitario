@@ -201,7 +201,7 @@ public class EstudianteController implements IBuscador {
     public boolean agregarEstudiante(String nombre, String apellido, String carrera, double promedio) {
         // Validación de datos
         if (nombre == null || nombre.isEmpty() || apellido == null || apellido.isEmpty() ||
-            carrera == null || carrera.isEmpty()) {
+            carrera.equals("Seleccionar...")) { /// No funciona "carrera == null", ya que seleccionar cuenta como opc valida.
             vista.mostrarError("Todos los campos son obligatorios.");
             return false;
         }

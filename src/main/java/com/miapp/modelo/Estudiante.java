@@ -1,4 +1,4 @@
-package com.miapp.modelo;
+    package com.miapp.modelo;
 import java.util.ArrayList;
 
 /**
@@ -15,6 +15,7 @@ public final class Estudiante extends Persona {
     // ── Atributos de instancia ────────────────────────────────────────────────
     private String carrera;
     private double promedio;
+    private String estadoMatricula;
     private ArrayList<Curso> cursosMatriculados;
 
     // ── Constructor ───────────────────────────────────────────────────────────
@@ -57,11 +58,19 @@ public final class Estudiante extends Persona {
     public double getPromedio() { 
         return promedio; 
     }
+    
+    public String getEstadoMatricula(){
+        return estadoMatricula;
+    }
 
     // ── Setters ──────────────────────────────────────────────────────────────
 
     public void setCarrera(String carrera) { 
         this.carrera = carrera; 
+    }
+    
+    public void setEstadoMatricula(String estadoMatricula){
+        this.estadoMatricula = estadoMatricula;
     }
 
     /**

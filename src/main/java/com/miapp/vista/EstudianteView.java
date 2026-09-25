@@ -23,12 +23,19 @@ public class EstudianteView extends JFrame {
     private static final String TITULO_PANEL_CARRERA = "Buscar por carrera";
     private static final String TITULO_PANEL_AGREGAR = "Agregar nuevo estudiante";
     private static final String TITULO_PANEL_CURSOS = "Cursos: Inscripción y consulta";
+    private static final String TITULO_PANEL_PROFESOR = "Profesores: agregar y asignar curso";
+    private static final String TITULO_PANEL_ESTADO = "Estado de matricula: buscar y cambiar";
     private static final String TITULO_PANEL_RESULTADOS = "Resultados";
     private static final String LABEL_NOMBRE = "Nombre:";
     private static final String LABEL_APELLIDO = "Apellido:";
     private static final String LABEL_CARRERA = "Carrera:";
     private static final String LABEL_PROMEDIO = "Promedio:";
     private static final String LABEL_CURSO = "Curso:";
+    private static final String LABEL_SALARIO = "Salario base:";
+    private static final String LABEL_PROFESOR = "Profesor:";
+    private static final String LABEL_CURSO_ASIGNAR = "Curso a asignar:";
+    private static final String LABEL_ESTADO = "Nuevo estado:";
+    private static final String LABEL_ESTADO_INSTRUCCION = "('Cambiar estado' requiere seleccionar un estudiante en la tabla)";
     private static final String LABEL_CURSO_INSTRUCCION = "(Primero busque y seleccione un estudiante en la tabla)";
     private static final String LABEL_PROFESOR_ASIGNADO = "Profesor asignado: Ninguno";
     private static final String BOTON_BUSCAR = "Buscar";
@@ -78,6 +85,14 @@ public class EstudianteView extends JFrame {
     private JButton                btnEstudiantesCurso;
     private JButton                btnInscribirCurso;
     
+    // ── Componentes UI - Profesores: Agregar y asignar a curso ────────────────────────────────────
+    private JTextField             txtAgregarNombreProfesor;
+    private JSpinner               spinSalario;
+    private JComboBox<String>      cmbAgregarProfesor;
+    private JComboBox<String>      cmbAgregarCurso;
+    private JButton                btnAgregarProfesor;
+    private JButton                btnVerCursos;
+    private JButton                btnAsignarCurso;
 
     // ── Componentes UI - Resultados y Estado ────────────────────────────────────
     private JTable                 tblResultados;
@@ -177,6 +192,7 @@ public class EstudianteView extends JFrame {
         panelAgregar.add(lblAgregarApellido);
         panelAgregar.add(txtAgregarApellido);
         panelAgregar.add(lblAgregarCarrera);
+        panelAgregar.add(cmbAgregarCarrera);
         panelAgregar.add(lblAgregarPromedio);
         panelAgregar.add(spinPromedio);
         panelAgregar.add(btnAgregar);
@@ -208,6 +224,23 @@ public class EstudianteView extends JFrame {
         panelCursos.add(btnInscribirCurso);
         panelCursos.add(lblInstruccion);
         panelCursos.add(lblProfesorAsignado);
+        
+        // Panel Profesores: agregar y asignar a curso (Fila 5)
+        JPanel panelProfesor = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        panelProfesor.setBorder(BorderFactory.createTitledBorder(TITULO_PANEL_PROFESOR));
+        
+        JLabel lblNombreProfesor = new JLabel(LABEL_NOMBRE);
+        JLabel lblSalario = new JLabel(LABEL_SALARIO);
+        JLabel lblProfesor = new JLabel(LABEL_PROFESOR);
+        JLabel lblCursoAsignar = new JLabel(LABEL_CURSO_ASIGNAR);
+        
+        cmbAgregarProfesor = new JComboBox<>();
+        cmbAgregarProfesor.addItem(OPCION_SELECCIONAR);
+        
+        cmbAgregarCurso = new JComboBox<>();
+        cmbAgregarCurso.addItem(OPCION_SELECCIONAR);
+        // Se carga después, cuando el controlador esté disponible
+        
 
         // Panel superior con GridLayout (3 filas, 1 columna)
         JPanel panelSuperior = new JPanel(new GridLayout(4, 1, 5, 5));

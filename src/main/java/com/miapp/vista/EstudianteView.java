@@ -469,6 +469,13 @@ public class EstudianteView extends JFrame {
                 }
             }
         });
+        
+        
+        btnEstudiantesCurso.addActionListener((ActionEvent e) -> {
+            if (controlador != null) {
+                controlador.buscarEstudiantePorCurso(cmbCurso.getSelectedItem().toString().trim());
+            }
+        });
     }
 
     public void mostrarEstudiante(Object[] fila) {

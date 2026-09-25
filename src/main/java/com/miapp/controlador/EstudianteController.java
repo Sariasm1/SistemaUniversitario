@@ -14,6 +14,7 @@ public class EstudianteController implements IBuscador {
     private static final int CANTIDAD_ESTUDIANTES_INICIALES = 12;
     private static final String MENSAJE_BUSQUEDA_VACIA = "Por favor ingrese un nombre para buscar.";
     private static final String MENSAJE_BUSQUEDA_CARRERA_VACIA = "Por favor seleccione una carrera para buscar.";
+    private static final String MENSAJE_BUSQUEDA_CURSO_VACIO = "Por favor seleccione un curso para buscar.";
     private static final String MENSAJE_SIN_RESULTADOS = "No se encontraron estudiantes con ese criterio.";
 
     // ── Vista ─────────────────────────────────────────────────────────────────
@@ -51,6 +52,11 @@ public class EstudianteController implements IBuscador {
     @Override
     public void buscarEstudiantePorCarrera(String carrera) {
         buscarPorCarrera(carrera);
+    }
+    
+    @Override
+    public void buscarEstudiantePorCurso(String codigo) {
+        buscarPorCurso(codigo);
     }
 
     // ── Carga de datos iniciales ──────────────────────────────────────────────
@@ -153,6 +159,36 @@ public class EstudianteController implements IBuscador {
 
         // Mostrar resultados (ya convertidos a filas, no como Estudiante)
         vista.mostrarEstudiantes(convertirAFilas(resultados));
+    }
+    
+    private void buscarPorCurso(String codigo) {
+        // Validación básica usando constante final
+        if (codigo == null || codigo.isEmpty() || codigo.equals("Seleccionar...")) {
+            vista.mostrarError(MENSAJE_BUSQUEDA_CURSO_VACIO);
+            return;
+        }
+
+          Curso cursoEncontrado = null;
+          for (Curso c : cursos) {
+              if (c != null && c.getCodigo().equalsIgnoreCase(codigo.trim())) {
+                  cursoEncontrado = c;
+                  break;
+              }
+          }
+          
+          if (cursoEncontrado == null) {
+             vista.mostrarError("El objeto curso "+ codigo + " parece no existir [ERROR]");
+              return;
+          }
+
+          ArrayList<Estudiante> resultados = cursoEncontrado.getEstudiantesMatriculados();
+          
+          if (resultados == null || resultados.isEmpty()) {
+            vista.mostrarError("No hay estudiantes matriculados en este curso.");
+            return;
+         }
+
+          vista.mostrarEstudiantes(convertirAFilas(resultados));
     }
 
     

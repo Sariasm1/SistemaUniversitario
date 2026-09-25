@@ -22,6 +22,12 @@ public final class Profesor extends Persona implements IBuscador{
          totalProfesores++;
     }
     
+    @Override
+    public double calcularPago(){
+        return salarioBase;
+    }
+    
+    
     public void impartirClase(Curso c)
     {
         System.out.println("El profesor "+ this.getNombre() + " esta dando la clase del curso " + c.getCodigo());

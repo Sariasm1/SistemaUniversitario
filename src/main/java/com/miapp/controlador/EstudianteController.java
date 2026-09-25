@@ -20,8 +20,9 @@ public class EstudianteController implements IBuscador {
     private EstudianteView vista;
 
     // ── Array de estudiantes (fuente de datos) ────────────────────────────────
-    private Estudiante[] estudiantes;
+    private ArrayList<Estudiante> estudiantes;
     private Curso[] cursos;
+    private ArrayList<Profesor> profesores;
 
     // ── Constructor ───────────────────────────────────────────────────────────
 
@@ -54,23 +55,20 @@ public class EstudianteController implements IBuscador {
     // ── Carga de datos iniciales ──────────────────────────────────────────────
 
     private void inicializarEstudiantes() {
-        estudiantes = new Estudiante[CANTIDAD_ESTUDIANTES_INICIALES];
-
-        // Reinicia el contador estático de Estudiante antes de cargar nuevos datos
-        Estudiante.reiniciarContador();
-
-        estudiantes[0]  = new Estudiante(1,  "Ana ","García",        "Ingeniería de Sistemas",  4.5);
-        estudiantes[1]  = new Estudiante(2,  "Carlos"," López",      "Ingeniería Civil",        3.8);
-        estudiantes[2]  = new Estudiante(3,  "María", "Rodríguez",   "Medicina",                4.9);
-        estudiantes[3]  = new Estudiante(4,  "José ","Martínez",     "Derecho",                 3.5);
-        estudiantes[4]  = new Estudiante(5,  "Laura ","Sánchez",     "Administración",          4.1);
-        estudiantes[5]  = new Estudiante(6,  "Andrés ","Torres",     "Ingeniería de Sistemas",  3.9);
-        estudiantes[6]  = new Estudiante(7,  "Valentina ","Gómez",   "Psicología",              4.3);
-        estudiantes[7]  = new Estudiante(8,  "Luis ","Herrera",      "Economía",                3.7);
-        estudiantes[8]  = new Estudiante(9,  "Sofía ","Díaz",        "Ingeniería Civil",        4.6);
-        estudiantes[9]  = new Estudiante(10, "Juliana ","Morales",   "Medicina",                4.8);
-        estudiantes[10] = new Estudiante(11, "Ana Milena ","Ruiz",   "Derecho",                 4.0);
-        estudiantes[11] = new Estudiante(12, "Carlos Andrés ","Paz", "Administración",          3.6);
+        this.estudiantes = new ArrayList();
+        
+        this.estudiantes.add(new Estudiante(1, "Ana ", "García", "Ingeniería de Sistemas", 4.5));
+        this.estudiantes.add(new Estudiante(2, "Carlos", " López", "Ingeniería Civil", 3.8));
+        this.estudiantes.add(new Estudiante(3, "María", "Rodríguez", "Medicina", 4.9));
+        this.estudiantes.add(new Estudiante(4, "José ", "Martínez", "Derecho", 3.5));
+        this.estudiantes.add(new Estudiante(5, "Laura ", "Sánchez", "Administración", 4.1));
+        this.estudiantes.add(new Estudiante(6, "Andrés ", "Torres", "Ingeniería de Sistemas", 3.9));
+        this.estudiantes.add(new Estudiante(7, "Valentina ", "Gómez", "Psicología", 4.3));
+        this.estudiantes.add(new Estudiante(8, "Luis ", "Herrera", "Economía", 3.7));
+        this.estudiantes.add(new Estudiante(9, "Sofía ", "Díaz", "Ingeniería Civil", 4.6));
+        this.estudiantes.add(new Estudiante(10, "Juliana ", "Morales", "Medicina", 4.8));
+        this.estudiantes.add(new Estudiante(11, "Ana Milena ", "Ruiz", "Derecho", 4.0));
+        this.estudiantes.add(new Estudiante(12, "Carlos Andrés ", "Paz", "Administración", 3.6));
 
         // Log: informa cuántos estudiantes se cargaron usando static getTotalEstudiantes()
         System.out.println("Total de estudiantes cargados: " + Estudiante.getTotalEstudiantes());
@@ -208,24 +206,18 @@ public class EstudianteController implements IBuscador {
             return false;
         }
 
-        // Expandir el array si es necesario antes de agregar
-        if (estudiantes.length == Estudiante.getTotalEstudiantes()) {
-            // El array está lleno, crear uno más grande
-            Estudiante[] nuevoArray = new Estudiante[estudiantes.length + 5];
-            System.arraycopy(estudiantes, 0, nuevoArray, 0, estudiantes.length);
-            estudiantes = nuevoArray;
+        for(Estudiante e: estudiantes){
+            if (e.getNombre().trim().equalsIgnoreCase(nombre.trim()) && e.getApellido().trim().equalsIgnoreCase(apellido.trim())){
+                vista.mostrarError("Ya existe un estudiante con este nombre y apellido.");
+                return false;
+            }
         }
-
-        // Obtener el índice donde se guardará el nuevo estudiante
-        int indiceNuevoEstudiante = Estudiante.getTotalEstudiantes();
-
+        
         // Crear nuevo estudiante con ID automático basado en el contador static
         int proximoId = Estudiante.getProximoId();
         Estudiante nuevoEstudiante = new Estudiante(proximoId, nombre, apellido, carrera, promedio);
-
-        // Agregar el nuevo estudiante en la posición correcta
-        estudiantes[indiceNuevoEstudiante] = nuevoEstudiante;
-
+        estudiantes.add(nuevoEstudiante);
+        
         // Mostrar mensaje de éxito
         vista.mostrarMensaje("Estudiante agregado correctamente.\nTotal de estudiantes: " +
                             Estudiante.getTotalEstudiantes());

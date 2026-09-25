@@ -44,6 +44,9 @@ public class EstudianteView extends JFrame {
     private static final String BOTON_AGREGAR = "Agregar Estudiante";
     private static final String BOTON_VER_ESTUDIANTES = "Ver estudiantes del curso";
     private static final String BOTON_INSCRIBIR = "Inscribir en curso";
+    private static final String BOTON_AGREGAR_PROFESOR = "Agregar Profesor";
+    private static final String BOTON_VER_CURSOS = "Ver cursos del profesor";
+    private static final String BOTON_ASIGNAR_CURSO = "Asignar a curso";
     private static final String OPCION_SELECCIONAR = "Seleccionar...";
     private static final String MENSAJE_INICIAL = "Ingrese un nombre o seleccione una carrera y presione Buscar.";
     private static final String MENSAJE_ENCONTRADO_UNO = "Se encontró 1 estudiante.";
@@ -56,6 +59,9 @@ public class EstudianteView extends JFrame {
     private static final Color COLOR_BOTON_LIMPIAR = new Color(244, 67, 54);
     private static final Color COLOR_BOTON_AGREGAR = new Color(103, 58, 183);
     private static final Color COLOR_BOTON_VER_ESTUDIANTES = new Color(91, 181, 155);
+    private static final Color COLOR_BOTON_AGREGAR_PROFESOR = new Color(39, 118, 245);
+    private static final Color COLOR_BOTON_VER_CURSOS = new Color(91, 181, 155);
+    private static final Color COLOR_BOTON_ASIGNAR_CURSO = new Color(39, 118, 245);
     private static final Color COLOR_BOTON_INSCRIBIR = new Color(242, 183, 44);
     private static final Color COLOR_BOTON_TEXTO = Color.WHITE;
     private static final Color COLOR_ESTADO_TEXTO = Color.GRAY;
@@ -209,9 +215,9 @@ public class EstudianteView extends JFrame {
         cmbCurso.addItem(OPCION_SELECCIONAR);
         // Se carga después, cuando el controlador esté disponible
         btnEstudiantesCurso = new JButton(BOTON_VER_ESTUDIANTES);
-        btnAgregar.setBackground(COLOR_BOTON_VER_ESTUDIANTES);
-        btnAgregar.setForeground(COLOR_BOTON_TEXTO);
-        btnAgregar.setFocusPainted(false);
+        btnEstudiantesCurso.setBackground(COLOR_BOTON_VER_ESTUDIANTES);
+        btnEstudiantesCurso.setForeground(COLOR_BOTON_TEXTO);
+        btnEstudiantesCurso.setFocusPainted(false);
        
         btnInscribirCurso = new JButton(BOTON_INSCRIBIR);
         btnInscribirCurso.setBackground(COLOR_BOTON_INSCRIBIR);
@@ -234,20 +240,51 @@ public class EstudianteView extends JFrame {
         JLabel lblProfesor = new JLabel(LABEL_PROFESOR);
         JLabel lblCursoAsignar = new JLabel(LABEL_CURSO_ASIGNAR);
         
+        txtAgregarNombre = new JTextField(ANCHO_CAMPO_AGREGAR);
+        
+        spinSalario = new JSpinner(new SpinnerNumberModel(2000000.0, 2000000.0, 4000000.0, 50000.0));
+        spinSalario.setPreferredSize(new Dimension(110, 25));
+        
         cmbAgregarProfesor = new JComboBox<>();
         cmbAgregarProfesor.addItem(OPCION_SELECCIONAR);
         
         cmbAgregarCurso = new JComboBox<>();
         cmbAgregarCurso.addItem(OPCION_SELECCIONAR);
         // Se carga después, cuando el controlador esté disponible
+        btnAgregarProfesor = new JButton(BOTON_AGREGAR_PROFESOR);
+        btnAgregarProfesor.setBackground(COLOR_BOTON_AGREGAR_PROFESOR);
+        btnAgregarProfesor.setForeground(COLOR_BOTON_TEXTO);
+        btnAgregarProfesor.setFocusPainted(false);
         
+        btnVerCursos = new JButton(BOTON_VER_CURSOS);
+        btnVerCursos.setBackground(COLOR_BOTON_VER_CURSOS);
+        btnVerCursos.setForeground(COLOR_BOTON_TEXTO);
+        btnVerCursos.setFocusPainted(false);
+        
+        btnAsignarCurso = new JButton(BOTON_ASIGNAR_CURSO);
+        btnVerCursos.setBackground(COLOR_BOTON_ASIGNAR_CURSO);
+        btnVerCursos.setForeground(COLOR_BOTON_TEXTO);
+        btnVerCursos.setFocusPainted(false);
+        
+        panelProfesor.add(lblNombreProfesor);
+        panelProfesor.add(txtAgregarNombre);
+        panelProfesor.add(lblSalario);
+        panelProfesor.add(spinSalario);
+        panelProfesor.add(btnAgregarProfesor);
+        panelProfesor.add(lblProfesor);
+        panelProfesor.add(cmbAgregarProfesor);
+        panelProfesor.add(btnVerCursos);
+        panelProfesor.add(lblCursoAsignar);
+        panelProfesor.add(cmbAgregarCurso);
+        panelProfesor.add(btnAsignarCurso);
 
         // Panel superior con GridLayout (3 filas, 1 columna)
-        JPanel panelSuperior = new JPanel(new GridLayout(4, 1, 5, 5));
+        JPanel panelSuperior = new JPanel(new GridLayout(5, 1, 5, 5));
         panelSuperior.add(panelBusqueda);
         panelSuperior.add(panelCarrera);
         panelSuperior.add(panelAgregar);
         panelSuperior.add(panelCursos);
+        panelSuperior.add(panelProfesor);
 
         // ────────────────────────────────────────────────────────────────────────
         // PANEL CENTRAL: Tabla de resultados

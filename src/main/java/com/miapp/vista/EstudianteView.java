@@ -503,11 +503,22 @@ public class EstudianteView extends JFrame {
                     txtAgregarApellidoProfesor.setText("");
                     spinSalario.setValue(2000000.0);
                     actualizarTotalProfesores();
+                    actualizarComboProfesores();
                 }
             }
         });
     }
 
+    public void actualizarComboProfesores() {
+    if (controlador != null) {
+        cmbAgregarProfesor.removeAllItems();
+        cmbAgregarProfesor.addItem(OPCION_SELECCIONAR);
+        for (String prof : controlador.obtenerProfesores()) {
+            cmbAgregarProfesor.addItem(prof);
+        }
+    }
+}
+    
     public void mostrarEstudiante(Object[] fila) {
         limpiarTabla();
         modeloTabla.addRow(fila);

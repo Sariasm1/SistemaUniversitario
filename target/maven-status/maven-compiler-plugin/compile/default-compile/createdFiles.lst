@@ -1,3 +1,4 @@
+com\miapp\utilidades\EstadoMatricula.class
 com\miapp\servicios\IBuscador.class
 com\miapp\modelo\Profesor.class
 com\miapp\vista\EstudianteView.class

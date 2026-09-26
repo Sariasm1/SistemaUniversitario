@@ -1,6 +1,7 @@
 package com.miapp.modelo;
 import java.util.ArrayList;
 import com.miapp.servicios.*;
+import com.miapp.utilidades.*;
 
 
 /**
@@ -16,7 +17,7 @@ public final class Estudiante extends Persona implements Inscribible {
     // ── Atributos de instancia ────────────────────────────────────────────────
     private String carrera;
     private double promedio;
-    private String estadoMatricula;
+    private EstadoMatricula estadoMatricula;
     private ArrayList<Curso> cursosMatriculados;
 
     // ── Constructor ───────────────────────────────────────────────────────────
@@ -24,6 +25,7 @@ public final class Estudiante extends Persona implements Inscribible {
     public Estudiante(int id, String nombre, String apellido, String carrera, double promedio) {
         super(nombre, apellido, id);
         this.carrera  = carrera;
+        this.estadoMatricula = EstadoMatricula.ACTIVO;
         cursosMatriculados = new ArrayList<>();
    
         if (promedio >= PROMEDIO_MINIMO && promedio <= PROMEDIO_MAXIMO) {
@@ -61,7 +63,7 @@ public final class Estudiante extends Persona implements Inscribible {
         return promedio; 
     }
     
-    public String getEstadoMatricula(){
+    public EstadoMatricula getEstadoMatricula(){
         return estadoMatricula;
     }
     
@@ -75,7 +77,7 @@ public final class Estudiante extends Persona implements Inscribible {
         this.carrera = carrera; 
     }
     
-    public void setEstadoMatricula(String estadoMatricula){
+    public void setEstadoMatricula(EstadoMatricula estadoMatricula){
         this.estadoMatricula = estadoMatricula;
     }
 

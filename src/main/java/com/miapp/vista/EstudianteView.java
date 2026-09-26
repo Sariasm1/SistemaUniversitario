@@ -1,12 +1,16 @@
 package com.miapp.vista;
 
 import com.miapp.controlador.EstudianteController;
+import com.miapp.utilidades.EstadoMatricula; 
+// DISCLAIMER: Desconozco si habría algún problema con realizar esta referencia.
+// Por lo que se solo es un enum de información que puede ser accedido por la vista para cargar sus cadena de texto.
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
+
 
 public class EstudianteView extends JFrame {
 
@@ -306,9 +310,9 @@ public class EstudianteView extends JFrame {
         
         cmbEstado = new JComboBox<>();
         cmbEstado.addItem(OPCION_SELECCIONAR);
-        cmbEstado.addItem("ACTIVO");
-        cmbEstado.addItem("EGRESADO");
-        cmbEstado.addItem("RETIRADO");
+        for (EstadoMatricula estado : EstadoMatricula.values()) {
+        cmbEstado.addItem(estado.name());
+        }
         
         btnBuscarEstado = new JButton(BOTON_BUSCAR_ESTADO);
         btnBuscarEstado.setBackground(COLOR_BOTON_BUSCAR_ESTADO);
@@ -544,6 +548,14 @@ public class EstudianteView extends JFrame {
                 controlador.asignarCursoAlProfesor(nombreCompleto, codigo);
             }
         });     
+          
+        
+       // Evento: Filtrar estudiantes por estado matricula
+       btnBuscarEstado.addActionListener((ActionEvent e) -> {
+            String estadoSeleccionado = (String) cmbEstado.getSelectedItem();
+            controlador.buscarEstudiantesPorEstado(estadoSeleccionado);
+        });         
+                
     }
 
     public void actualizarComboProfesores() {

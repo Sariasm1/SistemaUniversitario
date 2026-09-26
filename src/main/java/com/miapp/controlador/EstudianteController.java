@@ -3,6 +3,7 @@ package com.miapp.controlador;
 import com.miapp.modelo.*;
 import com.miapp.servicios.IBuscador;
 import com.miapp.vista.EstudianteView;
+import com.miapp.utilidades.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,8 @@ public class EstudianteController implements IBuscador {
     private static final String MENSAJE_BUSQUEDA_PROFESOR_VACIO = "Por favor seleccione un profesor.";
     private static final String MENSAJE_MATERIA_MAXIMA = "El estudiante superó el limite de materias";
     private static final String MENSAJE_CURSO_ACTUAL = "El estudiante ya se encuentra en este curso";
-    private static final String MENSAJE_SIN_RESULTADOS = "No se encontraron estudiantes con ese criterio.";
+    private static final String MENSAJE_ESTADO_VACIO = "Por favor seleccione un estado para filtrar";
+    private static final String MENSAJE_SIN_RESULTADOS = "No se encontraron estudiantes con ese estado.";
 
     // ── Vista ─────────────────────────────────────────────────────────────────
     private EstudianteView vista;
@@ -483,5 +485,26 @@ public class EstudianteController implements IBuscador {
         estudianteEncontrado.inscribir(cursoEncontrado);
         cursoEncontrado.addEstudiantesMatriculados(estudianteEncontrado);
         vista.mostrarMensaje("Se matriculó al estudiante "+estudianteEncontrado.getNombre().trim() + " " + estudianteEncontrado.getApellido().trim()+" en el curso "+cursoEncontrado.getCodigo());
+    }
+    
+    public void buscarEstudiantesPorEstado(String estado){
+        if (estado == null || estado.trim().isEmpty() || estado.equals("Seleccionar...")) {
+        vista.mostrarError(MENSAJE_ESTADO_VACIO);
+        return;
+        }
+        
+        ArrayList<Estudiante> estudiantesEncontrados = new ArrayList<>();
+        for (Estudiante e : estudiantes) {
+            if (e != null && e.getEstadoMatricula() == EstadoMatricula.valueOf(estado.trim().toUpperCase())) {
+                estudiantesEncontrados.add(e);
+            }
+        }
+        
+        if(estudiantesEncontrados.isEmpty()){
+            vista.mostrarError(MENSAJE_SIN_RESULTADOS);
+            return;
+        }
+        
+        vista.mostrarEstudiantes(convertirAFilas(estudiantesEncontrados));
     }
 }

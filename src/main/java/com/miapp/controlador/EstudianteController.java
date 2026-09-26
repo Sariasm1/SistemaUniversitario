@@ -16,6 +16,8 @@ public class EstudianteController implements IBuscador {
     private static final String MENSAJE_BUSQUEDA_CARRERA_VACIA = "Por favor seleccione una carrera para buscar.";
     private static final String MENSAJE_BUSQUEDA_CURSO_VACIO = "Por favor seleccione un curso para buscar.";
     private static final String MENSAJE_BUSQUEDA_PROFESOR_VACIO = "Por favor seleccione un profesor.";
+    private static final String MENSAJE_MATERIA_MAXIMA = "El estudiante superó el limite de materias";
+    private static final String MENSAJE_CURSO_ACTUAL = "El estudiante ya se encuentra en este curso";
     private static final String MENSAJE_SIN_RESULTADOS = "No se encontraron estudiantes con ese criterio.";
 
     // ── Vista ─────────────────────────────────────────────────────────────────
@@ -356,7 +358,6 @@ public class EstudianteController implements IBuscador {
             }
         }
         
-        // Crear nuevo estudiante con ID automático basado en el contador static
         int proximoId = Profesor.getProximoId();
         Profesor nuevoProfesor = new Profesor(nombre, apellido, proximoId, salarioBase);
         profesores.add(nuevoProfesor);
@@ -420,5 +421,67 @@ public class EstudianteController implements IBuscador {
         profesorEncontrado.impartirClase(cursoEncontrado);
         vista.mostrarMensaje("Se le asignó el curso "+ codigo + " al profesor " + nombreApellido);
         return true;
+    }
+    
+    public void inscribirEstudianteCurso(int idEstudiante, String codigoCurso){
+        System.out.println("Recibido 1");
+        if (codigoCurso == null || codigoCurso.trim().isEmpty() || codigoCurso.equals("Seleccionar...")) {
+            vista.mostrarError(MENSAJE_BUSQUEDA_CURSO_VACIO);
+            return;
+    }
+        System.out.println("Recibido 2");
+        Estudiante estudianteEncontrado = null;
+        for (Estudiante e : estudiantes) {
+            if (e != null && e.getId() == idEstudiante) {
+                estudianteEncontrado = e;
+                break;
+            }
+        }
+        System.out.println("Recibido 3");
+        Curso cursoEncontrado = null;
+        for (Curso c : cursos) {
+        if (c != null && c.getCodigo().equalsIgnoreCase(codigoCurso.trim())) {
+            cursoEncontrado = c;
+            break;
+        }
+       }
+        
+        System.out.println("Recibido 4");
+        if (estudianteEncontrado == null) {
+            vista.mostrarError("El estudiante con ID " + idEstudiante + " no fue encontrado. [ERROR]");
+            return;
+        }
+        
+        System.out.println("Recibido 5");
+        if (cursoEncontrado == null) {
+        vista.mostrarError("El curso " + codigoCurso + " no fue encontrado. [ERROR]");
+        return;
+        }
+        
+        System.out.println("Recibido 6");
+        if(estudianteEncontrado.getCursosMatriculados().size() >= Estudiante.MAX_MATERIAS)
+        {
+            vista.mostrarError(MENSAJE_MATERIA_MAXIMA);
+            return;
+        }
+
+
+        /* 
+        Para evitar volver a hacer una validación de codigoCurso con arrayList cursos de estudiante
+        se verifica desde el mismo curso previamente indexeado y validado teniendo en cuenta que se
+        mantendrá la relación biodireccional N:M entre Curso y Estudiante
+        */
+        System.out.println("Recibido 7");
+        for(Estudiante e: cursoEncontrado.getEstudiantesMatriculados()){
+            if (e.getId() == estudianteEncontrado.getId())
+            {
+               vista.mostrarError(MENSAJE_CURSO_ACTUAL);
+               return;
+            }
+        }
+        System.out.println("Recibido 8");
+        estudianteEncontrado.inscribir(cursoEncontrado);
+        cursoEncontrado.addEstudiantesMatriculados(estudianteEncontrado);
+        vista.mostrarMensaje("Se matriculó al estudiante "+estudianteEncontrado.getNombre().trim() + " " + estudianteEncontrado.getApellido().trim()+" en el curso "+cursoEncontrado.getCodigo());
     }
 }

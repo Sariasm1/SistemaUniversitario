@@ -24,6 +24,7 @@ public final class Estudiante extends Persona implements Inscribible {
     public Estudiante(int id, String nombre, String apellido, String carrera, double promedio) {
         super(nombre, apellido, id);
         this.carrera  = carrera;
+        cursosMatriculados = new ArrayList<>();
    
         if (promedio >= PROMEDIO_MINIMO && promedio <= PROMEDIO_MAXIMO) {
             this.promedio = promedio;
@@ -63,6 +64,10 @@ public final class Estudiante extends Persona implements Inscribible {
     public String getEstadoMatricula(){
         return estadoMatricula;
     }
+    
+    public ArrayList<Curso> getCursosMatriculados(){
+        return cursosMatriculados;
+    }
 
     // ── Setters ──────────────────────────────────────────────────────────────
 
@@ -87,16 +92,6 @@ public final class Estudiante extends Persona implements Inscribible {
     
     @Override
     public boolean inscribir(Curso curso) {
-        if (this.cursosMatriculados.size() >= MAX_MATERIAS) {
-            return false;
-        }
-
-        for (Curso c : this.cursosMatriculados) {
-            if (c != null && c.getCodigo().equalsIgnoreCase(curso.getCodigo())) {
-                return false; 
-            }
-        }
-
         this.cursosMatriculados.add(curso);
         return true;
     }

@@ -494,6 +494,21 @@ public class EstudianteView extends JFrame {
             }
         });
         
+        btnInscribirCurso.addActionListener((ActionEvent e) -> {
+            System.out.println("Clickeado");
+            if (controlador != null) {
+                if (tblResultados.getSelectedRow() == -1) {
+                    mostrarError("Por favor, seleccione un estudiante en la tabla.");
+                    return;
+                }
+                 System.out.println("Clickeado 2");
+                int idEstudiante = Integer.parseInt(tblResultados.getValueAt(tblResultados.getSelectedRow(), 0).toString());
+                String codigoCurso = cmbCurso.getSelectedItem().toString().trim();
+                 System.out.println("Clickeado 3");
+                controlador.inscribirEstudianteCurso(idEstudiante, codigoCurso);
+            }
+        });
+        
         // Evento: agregar nuevo profesor
         btnAgregarProfesor.addActionListener((ActionEvent e) -> {
             if (controlador != null) {
@@ -528,7 +543,7 @@ public class EstudianteView extends JFrame {
                 String codigo = (String) cmbAgregarCurso.getSelectedItem();
                 controlador.asignarCursoAlProfesor(nombreCompleto, codigo);
             }
-        });        
+        });     
     }
 
     public void actualizarComboProfesores() {

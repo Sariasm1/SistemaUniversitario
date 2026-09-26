@@ -372,59 +372,86 @@ public class EstudianteController implements IBuscador {
         return true;
     }
     
-    public boolean asignarCursoAlProfesor(String nombreApellido, String codigo) {
-        // Validación de datos
-        if (nombreApellido == null || nombreApellido.trim().isEmpty() || nombreApellido.equals("Seleccionar...")) {
-            vista.mostrarError(MENSAJE_BUSQUEDA_PROFESOR_VACIO);
-            return false;
-        }
-        
-        if (codigo == null || codigo.trim().isEmpty() || codigo.equals("Seleccionar...")) {
-            vista.mostrarError(MENSAJE_BUSQUEDA_CURSO_VACIO);
-            return false;
-        }
 
-        Profesor profesorEncontrado = null;
-        for (Profesor p : profesores) {
-            if (p != null) {
-                String nombreCompleto = p.getNombre().trim() + " " + p.getApellido().trim();
-                if (nombreCompleto.equalsIgnoreCase(nombreApellido.trim())) {
-                    profesorEncontrado = p;
+    private void removerCursoDeProfesorAnterior(Curso curso) {
+        if (curso == null) return;
+
+        for (Profesor prof : profesores) {
+            if (prof != null && prof.getCursos() != null) {
+                Curso cursoARemover = null;
+                for (Curso c : prof.getCursos()) {
+                    if (c != null && c.getCodigo().equalsIgnoreCase(curso.getCodigo())) {
+                        cursoARemover = c;
+                        break;
+                    }
+                }
+
+                if (cursoARemover != null) {
+                    prof.getCursos().remove(cursoARemover);
+                    System.out.println("Se removió el curso " + curso.getCodigo() + " del profesor anterior: " + prof.getNombre() + " " + prof.getApellido());
                     break;
                 }
             }
         }
+    }
+    
+    public boolean asignarCursoAlProfesor(String nombreApellido, String codigo) {
+    if (nombreApellido == null || nombreApellido.trim().isEmpty() || nombreApellido.equals("Seleccionar...")) {
+        vista.mostrarError(MENSAJE_BUSQUEDA_PROFESOR_VACIO);
+        return false;
+    }
+    
+    if (codigo == null || codigo.trim().isEmpty() || codigo.equals("Seleccionar...")) {
+        vista.mostrarError(MENSAJE_BUSQUEDA_CURSO_VACIO);
+        return false;
+    }
 
-        if (profesorEncontrado == null) {
-            vista.mostrarError("El profesor " + nombreApellido + " no fue encontrado.");
-            return false;
-        }
-        
-
-        Curso cursoEncontrado = null;
-        for (Curso c : cursos) {
-            if (c != null && c.getCodigo().equalsIgnoreCase(codigo.trim())) {
-                cursoEncontrado = c;
+    Profesor profesorEncontrado = null;
+    for (Profesor p : profesores) {
+        if (p != null) {
+            String nombreCompleto = p.getNombre().trim() + " " + p.getApellido().trim();
+            if (nombreCompleto.equalsIgnoreCase(nombreApellido.trim())) {
+                profesorEncontrado = p;
                 break;
             }
         }
-
-        if (cursoEncontrado == null) {
-            vista.mostrarError("El curso con código " + codigo + " no fue encontrado.");
-            return false;
-        }
-
-        for (Curso c : profesorEncontrado.getCursos()) {
-            if (c != null && c.getCodigo().equalsIgnoreCase(cursoEncontrado.getCodigo())) {
-                vista.mostrarError("El profesor ya tiene asignado el curso "+ codigo);
-                return false;
-            }
-        }
-
-        profesorEncontrado.impartirClase(cursoEncontrado);
-        vista.mostrarMensaje("Se le asignó el curso "+ codigo + " al profesor " + nombreApellido);
-        return true;
     }
+
+    if (profesorEncontrado == null) {
+        vista.mostrarError("El profesor " + nombreApellido + " no fue encontrado.");
+        return false;
+    }
+
+    Curso cursoEncontrado = null;
+    for (Curso c : cursos) {
+        if (c != null && c.getCodigo().equalsIgnoreCase(codigo.trim())) {
+            cursoEncontrado = c;
+            break;
+        }
+    }
+
+    if (cursoEncontrado == null) {
+        vista.mostrarError("El curso con código " + codigo + " no fue encontrado.");
+        return false;
+    }
+
+    if (cursoEncontrado.getProfesor() != null 
+            && cursoEncontrado.getProfesor().equals(profesorEncontrado)) {
+        vista.mostrarError("El profesor ya tiene asignado el curso " + codigo);
+        return false;
+    }
+
+    Profesor profesorAnterior = cursoEncontrado.getProfesor();
+    if (profesorAnterior != null && profesorAnterior.getCursos() != null) {
+        profesorAnterior.getCursos().remove(cursoEncontrado);
+    }
+
+    profesorEncontrado.impartirClase(cursoEncontrado);
+    cursoEncontrado.setProfesor(profesorEncontrado);  
+
+    vista.mostrarMensaje("Se le asignó el curso " + codigo + " al profesor " + nombreApellido);
+    return true;
+}
     
     public void inscribirEstudianteCurso(int idEstudiante, String codigoCurso){
         if (codigoCurso == null || codigoCurso.trim().isEmpty() || codigoCurso.equals("Seleccionar...")) {

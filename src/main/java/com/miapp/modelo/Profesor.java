@@ -4,13 +4,12 @@
  */
 package com.miapp.modelo;
 import java.util.ArrayList;
-import com.miapp.servicios.*;
 
 /**
  *
  * @author santi
  */
-public final class Profesor extends Persona implements IBuscador{
+public final class Profesor extends Persona{
     
     private final double salarioBase;
     private static int totalProfesores = 0;
@@ -56,30 +55,4 @@ public final class Profesor extends Persona implements IBuscador{
         System.out.println("El profesor "+ this.getNombre() + " esta dando la clase del curso " + c.getCodigo());
         addCursos(c);
     }
-
-    @Override
-    public void buscarEstudiante(String criterio) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void buscarEstudiantePorCarrera(String carrera) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void cargarDatos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void buscarEstudiantePorCurso(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void buscarCursosPorProfesor(String nombreCompleto) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
 }

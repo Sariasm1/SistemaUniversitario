@@ -1,15 +1,16 @@
-    package com.miapp.modelo;
+package com.miapp.modelo;
 import java.util.ArrayList;
+import com.miapp.servicios.*;
+
 
 /**
  * Modelo: representa la entidad Estudiante.
  */
-public final class Estudiante extends Persona {  
+public final class Estudiante extends Persona implements Inscribible {  
 
     private static int totalEstudiantes = 0;
-    public static final int PROMEDIO_MINIMO = 0;
-    public static final int PROMEDIO_MAXIMO = 5;
-    public static final String CARRERA_PREDETERMINADA = "Sin especificar";
+    private static final int PROMEDIO_MINIMO = 0;
+    private static final int PROMEDIO_MAXIMO = 5;
     public static final int MAX_MATERIAS = 5;
 
     // ── Atributos de instancia ────────────────────────────────────────────────
@@ -82,6 +83,22 @@ public final class Estudiante extends Persona {
         if (p >= PROMEDIO_MINIMO && p <= PROMEDIO_MAXIMO) {
             this.promedio = p;
         }
+    }
+    
+    @Override
+    public boolean inscribir(Curso curso) {
+        if (this.cursosMatriculados.size() >= MAX_MATERIAS) {
+            return false;
+        }
+
+        for (Curso c : this.cursosMatriculados) {
+            if (c != null && c.getCodigo().equalsIgnoreCase(curso.getCodigo())) {
+                return false; 
+            }
+        }
+
+        this.cursosMatriculados.add(curso);
+        return true;
     }
     
     @Override

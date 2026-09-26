@@ -44,7 +44,7 @@ public class Curso {
         return codigo;
     }
 
-public Profesor getProfesor() {
+    public Profesor getProfesor() {
         return profesor;
     }
 

@@ -372,28 +372,6 @@ public class EstudianteController implements IBuscador {
         return true;
     }
     
-
-    private void removerCursoDeProfesorAnterior(Curso curso) {
-        if (curso == null) return;
-
-        for (Profesor prof : profesores) {
-            if (prof != null && prof.getCursos() != null) {
-                Curso cursoARemover = null;
-                for (Curso c : prof.getCursos()) {
-                    if (c != null && c.getCodigo().equalsIgnoreCase(curso.getCodigo())) {
-                        cursoARemover = c;
-                        break;
-                    }
-                }
-
-                if (cursoARemover != null) {
-                    prof.getCursos().remove(cursoARemover);
-                    System.out.println("Se removió el curso " + curso.getCodigo() + " del profesor anterior: " + prof.getNombre() + " " + prof.getApellido());
-                    break;
-                }
-            }
-        }
-    }
     
     public boolean asignarCursoAlProfesor(String nombreApellido, String codigo) {
     if (nombreApellido == null || nombreApellido.trim().isEmpty() || nombreApellido.equals("Seleccionar...")) {

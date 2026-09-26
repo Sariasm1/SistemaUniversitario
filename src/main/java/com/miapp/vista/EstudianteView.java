@@ -491,24 +491,22 @@ public class EstudianteView extends JFrame {
             }
         });
         
-        
+        // Evento: Ver estudiantes del curso.
         btnEstudiantesCurso.addActionListener((ActionEvent e) -> {
             if (controlador != null) {
                 controlador.buscarEstudiantePorCurso(cmbCurso.getSelectedItem().toString().trim());
             }
         });
         
+        // Evento: Inscribir estudiantes a un curso.
         btnInscribirCurso.addActionListener((ActionEvent e) -> {
-            System.out.println("Clickeado");
             if (controlador != null) {
                 if (tblResultados.getSelectedRow() == -1) {
                     mostrarError("Por favor, seleccione un estudiante en la tabla.");
                     return;
                 }
-                 System.out.println("Clickeado 2");
                 int idEstudiante = Integer.parseInt(tblResultados.getValueAt(tblResultados.getSelectedRow(), 0).toString());
                 String codigoCurso = cmbCurso.getSelectedItem().toString().trim();
-                 System.out.println("Clickeado 3");
                 controlador.inscribirEstudianteCurso(idEstudiante, codigoCurso);
             }
         });
@@ -554,7 +552,19 @@ public class EstudianteView extends JFrame {
        btnBuscarEstado.addActionListener((ActionEvent e) -> {
             String estadoSeleccionado = (String) cmbEstado.getSelectedItem();
             controlador.buscarEstudiantesPorEstado(estadoSeleccionado);
-        });         
+        });     
+       
+       // Evento: Cambiar estudiantes de estado matricula
+       btnCambiarEstado.addActionListener((ActionEvent e) -> {
+           if (tblResultados.getSelectedRow() == -1) {
+                    mostrarError("Por favor, seleccione un estudiante en la tabla.");
+                    return;
+               }
+            int idEstudiante = Integer.parseInt(tblResultados.getValueAt(tblResultados.getSelectedRow(), 0).toString());
+            String estadoSeleccionado = (String) cmbEstado.getSelectedItem();
+            limpiarTabla();
+            controlador.cambiarEstudianteDeEstado(idEstudiante, estadoSeleccionado);
+        });   
                 
     }
 
